@@ -28,9 +28,27 @@ export async function cerrarSesion() {
   await leerRespuesta(respuesta);
 }
 
-// Pide la lista al servidor
-export async function cargarGastos() {
-  const respuesta = await fetch(URL_API);
+// La actual y la nueva; el servidor responde { mensaje } o un error
+export async function cambiarClave(actual, nueva) {
+  const respuesta = await fetch("/api/clave", {
+    method: "POST",
+    headers: JSON_CABECERAS,
+    body: JSON.stringify({ actual, nueva }),
+  });
+  return await leerRespuesta(respuesta);
+}
+
+// Pide la lista al servidor, filtrada por mes ("2026-10") y categoría ("comida");
+// "" = sin filtro
+export async function cargarGastos(mes = "", categoria = "") {
+  const filtros = new URLSearchParams({ mes, categoria });   // mes=2026-10&categoria=comida
+  const respuesta = await fetch(`${URL_API}?${filtros}`);
+  return await leerRespuesta(respuesta);
+}
+
+// Total por categoría del mes ("" = de todo): { total, categorias: [...] }
+export async function cargarResumen(mes = "") {
+  const respuesta = await fetch(`/api/resumen?${new URLSearchParams({ mes })}`);
   return await leerRespuesta(respuesta);
 }
 

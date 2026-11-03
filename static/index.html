@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mis Gastos</title>
+  <meta name="description" content="Mis Gastos: anotá en qué se te va la plata, mes a mes, desde cualquier compu o celular.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
@@ -103,13 +105,31 @@
     </section>
     <section class="panel">
       <h2>Copia de seguridad</h2>
-      <p>Bajá tus gastos a un archivo JSON, o traé los que tenías en la versión del navegador.</p>
+      <p>Bajá tus gastos a un archivo JSON o a un CSV para Excel, o traé los que tenías en la versión del navegador.</p>
       <div class="botones">
         <button type="button" id="exportar" class="boton boton-secundario">Exportar JSON</button>
+        <a href="/api/gastos.csv" id="bajar-csv" class="boton boton-secundario" download>Bajar CSV</a>
         <label for="importar" class="boton boton-secundario">Importar JSON</label>
         <input type="file" id="importar" accept=".json,application/json" class="oculto">
       </div>
       <p id="mensaje-copia" class="mensaje" aria-live="polite"></p>
+    </section>
+    <section class="panel">
+      <details class="cuenta">
+        <summary>Mi cuenta</summary>
+        <form id="form-clave" class="formulario-acceso">
+          <div class="campo">
+            <label for="clave-actual">Contraseña actual</label>
+            <input type="password" id="clave-actual" name="actual" autocomplete="current-password" required>
+          </div>
+          <div class="campo">
+            <label for="clave-nueva">Contraseña nueva</label>
+            <input type="password" id="clave-nueva" name="nueva" autocomplete="new-password" minlength="8" required>
+          </div>
+          <button type="submit" class="boton">Cambiar contraseña</button>
+        </form>
+        <p id="mensaje-cuenta" class="mensaje" aria-live="polite"></p>
+      </details>
     </section>
   </main>
 

@@ -1,5 +1,5 @@
 // vista.js — todo lo que se dibuja en la pantalla
-import { CATEGORIAS, calcularTotal, resumirPorCategoria } from "./gastos.js";
+import { CATEGORIAS, calcularTotal } from "./gastos.js";
 
 const lista = document.querySelector("#lista");
 const total = document.querySelector("#total");
@@ -15,6 +15,7 @@ const botonCancelar = document.querySelector("#cancelar");
 const mensaje = document.querySelector("#mensaje-copia");
 const mensajeError = document.querySelector("#mensaje");
 const emailUsuario = document.querySelector("#email-usuario");
+const mensajeCuenta = document.querySelector("#mensaje-cuenta");
 
 export function formatearPesos(numero) {
   return "$ " + numero.toLocaleString("es-AR", { maximumFractionDigits: 2 });
@@ -78,13 +79,13 @@ export function dolarNoDisponible() {
   totalUsd.textContent = "no disponible";
 }
 
-// Cada categoría es un <li> con su nombre, una barra y el monto
-export function mostrarResumen(gastos) {
-  const items = resumirPorCategoria(gastos).map((dato) => {
+// Cada categoría es un <li> con su nombre, una barra y el monto (las cuentas vienen del servidor)
+export function mostrarResumen(datosResumen) {
+  const items = datosResumen.categorias.map((dato) => {
     const item = document.createElement("li");
     const nombre = document.createElement("span");
     nombre.className = "resumen-nombre";
-    nombre.textContent = dato.nombre;
+    nombre.textContent = CATEGORIAS[dato.categoria];
     const barra = document.createElement("div");
     barra.className = "barra";
     const relleno = document.createElement("div");
@@ -93,7 +94,8 @@ export function mostrarResumen(gastos) {
     barra.append(relleno);
     const monto = document.createElement("span");
     monto.className = "resumen-monto";
-    monto.textContent = `${formatearPesos(dato.total)} · ${dato.porcentaje} %`;
+    const cantidad = dato.cantidad === 1 ? "1 gasto" : `${dato.cantidad} gastos`;
+    monto.textContent = `${formatearPesos(dato.total)} · ${dato.porcentaje} % · ${cantidad}`;
     item.append(nombre, barra, monto);
     return item;
   });
@@ -123,6 +125,10 @@ export function mostrarMensaje(texto) {
 
 export function mostrarUsuario(email) {
   emailUsuario.textContent = email;
+}
+
+export function mostrarMensajeCuenta(texto) {
+  mensajeCuenta.textContent = texto;
 }
 
 // Muestra un error arriba del formulario; con "" lo esconde

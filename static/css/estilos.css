@@ -283,6 +283,12 @@ select {
   margin: 0 0 1.25rem;
 }
 
+/* Un enlace con aspecto de botón (Bajar CSV y la página 404) */
+a.boton {
+  display: inline-block;
+  text-decoration: none;
+}
+
 /* Usuarios (app web, etapa 9): quién está adentro y la pantalla de entrar */
 .usuario {
   display: flex;
@@ -315,6 +321,18 @@ select {
 .ayuda {
   color: var(--suave);
   font-size: 0.85rem;
+}
+
+/* Mi cuenta (app web, etapa 12.5): un <details> que se abre con un clic */
+.cuenta summary {
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cuenta form {
+  max-width: 24rem;
+  margin-top: 1rem;
 }
 
 @media (min-width: 48rem) {

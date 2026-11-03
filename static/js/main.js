@@ -1,11 +1,12 @@
 // main.js — arranca la app y conecta los eventos con los datos
-// Mis Gastos web — etapa 11: publicada en Render
-import { ordenarPorFecha, filtrarGastos, esGastoValido } from "./gastos.js";
-import { traerUsuario, cerrarSesion, cargarGastos, agregarGasto, editarGasto, borrarGasto, importarGastos, exportarGastos, leerArchivo } from "./almacen.js";
+// Mis Gastos web — versión final (igual a la etapa 12.6)
+import { esGastoValido } from "./gastos.js";
+import { traerUsuario, cerrarSesion, cambiarClave, cargarGastos, cargarResumen, agregarGasto, editarGasto, borrarGasto, importarGastos, exportarGastos, leerArchivo } from "./almacen.js";
 import { traerDolar } from "./dolar.js";
 import * as vista from "./vista.js";
 
 let gastos = [];          // la lista llega del servidor al arrancar
+let resumen = { total: 0, categorias: [] };   // el resumen también lo arma el servidor
 let dolar = null;          // la cotización llega después, desde internet
 let editandoId = null;    // null = el formulario agrega; un número = edita ese gasto
 
@@ -17,13 +18,24 @@ const botonCancelar = document.querySelector("#cancelar");
 const botonExportar = document.querySelector("#exportar");
 const campoImportar = document.querySelector("#importar");
 const botonSalir = document.querySelector("#salir");
+const formClave = document.querySelector("#form-clave");
 
-// Vuelve a dibujar todo a partir de los datos y los filtros elegidos
+// Vuelve a dibujar todo con la lista que mandó el servidor (ya filtrada y ordenada)
 function actualizar() {
-  const visibles = filtrarGastos(ordenarPorFecha(gastos), filtroMes.value, filtroCategoria.value);
-  vista.mostrarGastos(visibles);
-  vista.mostrarResumen(visibles);
-  if (dolar !== null) vista.mostrarDolares(visibles, dolar);
+  vista.mostrarGastos(gastos);
+  vista.mostrarResumen(resumen);
+  if (dolar !== null) vista.mostrarDolares(gastos, dolar);
+}
+
+// Pide al servidor los gastos de los filtros elegidos y vuelve a dibujar
+async function recargar() {
+  try {
+    gastos = await cargarGastos(filtroMes.value, filtroCategoria.value);
+    resumen = await cargarResumen(filtroMes.value);   // el resumen va solo por mes
+    actualizar();
+  } catch (error) {
+    vista.mostrarError(error.message);
+  }
 }
 
 function leerFormulario() {
@@ -47,15 +59,13 @@ formulario.addEventListener("submit", async (evento) => {
   const datos = leerFormulario();
   try {
     if (editandoId === null) {
-      gastos.push(await agregarGasto(datos));   // el servidor le puso el id
+      await agregarGasto(datos);
     } else {
-      const editado = await editarGasto(editandoId, datos);
-      // map() arma una lista nueva: el gasto editado se reemplaza, el resto queda igual
-      gastos = gastos.map((gasto) => (gasto.id === editado.id ? editado : gasto));
+      await editarGasto(editandoId, datos);
     }
     vista.mostrarError("");   // si había un error de antes, se va
     terminarEdicion();
-    actualizar();
+    await recargar();         // la lista la arma el servidor, con los filtros elegidos
   } catch (error) {
     vista.mostrarError(error.message);   // el formulario queda como estaba, para corregirlo
   }
@@ -69,9 +79,8 @@ lista.addEventListener("click", async (evento) => {
   if (boton.classList.contains("borrar")) {
     try {
       await borrarGasto(id);
-      gastos = gastos.filter((gasto) => gasto.id !== id);
       if (editandoId === id) terminarEdicion();
-      actualizar();
+      await recargar();
     } catch (error) {
       vista.mostrarError(error.message);
     }
@@ -84,8 +93,9 @@ lista.addEventListener("click", async (evento) => {
 
 botonCancelar.addEventListener("click", terminarEdicion);
 
-filtroMes.addEventListener("input", actualizar);
-filtroCategoria.addEventListener("change", actualizar);
+// Cada cambio de filtro es un pedido nuevo: /api/gastos?mes=…&categoria=…
+filtroMes.addEventListener("input", recargar);
+filtroCategoria.addEventListener("change", recargar);
 
 botonExportar.addEventListener("click", () => {
   exportarGastos(gastos);
@@ -101,9 +111,8 @@ campoImportar.addEventListener("change", async () => {
     const validos = datos.filter(esGastoValido);
     // todos juntos en un solo pedido; después, la lista actualizada
     const resultado = await importarGastos(validos);
-    gastos = await cargarGastos();
     terminarEdicion();
-    actualizar();
+    await recargar();
     const descartados = datos.length - validos.length;
     vista.mostrarMensaje(`Importé ${resultado.importados} gastos` + (descartados > 0 ? ` (descarté ${descartados} incompletos).` : "."));
   } catch (error) {
@@ -115,6 +124,18 @@ campoImportar.addEventListener("change", async () => {
 botonSalir.addEventListener("click", async () => {
   await cerrarSesion();
   location.href = "/login.html";
+});
+
+formClave.addEventListener("submit", async (evento) => {
+  evento.preventDefault();
+  const datos = new FormData(formClave);
+  try {
+    const respuesta = await cambiarClave(datos.get("actual"), datos.get("nueva"));
+    formClave.reset();
+    vista.mostrarMensajeCuenta(respuesta.mensaje);
+  } catch (error) {
+    vista.mostrarMensajeCuenta(error.message);
+  }
 });
 
 async function cargarDolar() {
@@ -132,8 +153,7 @@ async function iniciar() {
   try {
     const usuario = await traerUsuario();   // sin sesión, almacen.js te manda a entrar
     vista.mostrarUsuario(usuario.email);
-    gastos = await cargarGastos();
-    actualizar();
+    await recargar();
   } catch (error) {
     vista.mostrarError(`No pude traer los gastos: ${error.message}`);
   }
