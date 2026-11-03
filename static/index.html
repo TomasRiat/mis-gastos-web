@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Gastos</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <h1>Mis Gastos</h1>
+    <p>Anotá en qué se te va la plata, mes a mes.</p>
+    <div class="usuario">
+      <span id="email-usuario"></span>
+      <button type="button" id="salir" class="boton boton-secundario">Salir</button>
+    </div>
+  </header>
+
+  <main>
+    <p id="mensaje" class="alerta" role="alert" hidden></p>
+    <section class="panel">
+      <h2 id="titulo-form">Nuevo gasto</h2>
+      <form id="form-gasto" class="formulario">
+        <div class="campo">
+          <label for="fecha">Fecha</label>
+          <input type="date" id="fecha" name="fecha" required>
+        </div>
+        <div class="campo">
+          <label for="categoria">Categoría</label>
+          <select id="categoria" name="categoria" required>
+            <option value="">Elegí una</option>
+            <option value="comida">Comida</option>
+            <option value="transporte">Transporte</option>
+            <option value="casa">Casa</option>
+            <option value="salidas">Salidas</option>
+            <option value="salud">Salud</option>
+            <option value="otros">Otros</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="monto">Monto ($)</label>
+          <input type="number" id="monto" name="monto" min="0.01" step="0.01" required>
+        </div>
+        <div class="campo campo-ancho">
+          <label for="descripcion">Descripción</label>
+          <input type="text" id="descripcion" name="descripcion" maxlength="60" placeholder="Ej.: super del sábado" required>
+        </div>
+        <div class="botones">
+          <button type="submit" id="guardar" class="boton">Agregar</button>
+          <button type="button" id="cancelar" class="boton boton-secundario" hidden>Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Gastos</h2>
+      <div class="filtros">
+        <div class="campo">
+          <label for="filtro-mes">Mes</label>
+          <input type="month" id="filtro-mes">
+        </div>
+        <div class="campo">
+          <label for="filtro-categoria">Categoría</label>
+          <select id="filtro-categoria">
+            <option value="">Todas</option>
+            <option value="comida">Comida</option>
+            <option value="transporte">Transporte</option>
+            <option value="casa">Casa</option>
+            <option value="salidas">Salidas</option>
+            <option value="salud">Salud</option>
+            <option value="otros">Otros</option>
+          </select>
+        </div>
+        <p id="contador" class="contador">Cargando gastos…</p>
+      </div>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th scope="col">Fecha</th>
+              <th scope="col">Categoría</th>
+              <th scope="col">Descripción</th>
+              <th scope="col" class="monto">Monto</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="lista"></tbody>
+          <tfoot>
+            <tr>
+              <th scope="row" colspan="3">Total</th>
+              <td id="total" class="monto">$ 0</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <p id="vacio" class="vacio" hidden>No hay gastos para mostrar. Cargá uno o cambiá los filtros.</p>
+      <p class="dolares">En dólares: <strong id="total-usd">calculando…</strong> <span id="cotizacion" class="cotizacion"></span></p>
+    </section>
+    <section class="panel">
+      <h2>Resumen por categoría</h2>
+      <ul id="resumen" class="resumen"></ul>
+    </section>
+    <section class="panel">
+      <h2>Copia de seguridad</h2>
+      <p>Bajá tus gastos a un archivo JSON, o traé los que tenías en la versión del navegador.</p>
+      <div class="botones">
+        <button type="button" id="exportar" class="boton boton-secundario">Exportar JSON</button>
+        <label for="importar" class="boton boton-secundario">Importar JSON</label>
+        <input type="file" id="importar" accept=".json,application/json" class="oculto">
+      </div>
+      <p id="mensaje-copia" class="mensaje" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p>Mis Gastos · tus datos quedan guardados en el servidor</p>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

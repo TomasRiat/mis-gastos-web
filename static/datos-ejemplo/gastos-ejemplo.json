@@ -1,0 +1,12 @@
+[
+  { "id": 1, "fecha": "2026-10-03", "categoria": "casa", "monto": 95000, "descripcion": "Alquiler (mi parte)" },
+  { "id": 2, "fecha": "2026-10-05", "categoria": "comida", "monto": 23400, "descripcion": "Compra grande del mes" },
+  { "id": 3, "fecha": "2026-10-12", "categoria": "salud", "monto": 8900, "descripcion": "Farmacia" },
+  { "id": 4, "fecha": "2026-10-18", "categoria": "salidas", "monto": 12000, "descripcion": "Cumpleaños de Juli" },
+  { "id": 5, "fecha": "2026-10-28", "categoria": "comida", "monto": 8500, "descripcion": "Super del sábado" },
+  { "id": 6, "fecha": "2026-10-29", "categoria": "transporte", "monto": 1800, "descripcion": "Carga SUBE" },
+  { "id": 7, "fecha": "2026-10-31", "categoria": "salidas", "monto": 5000, "descripcion": "Cine con amigos" },
+  { "id": 8, "fecha": "2026-11-01", "categoria": "casa", "monto": 18750, "descripcion": "Luz y gas" },
+  { "id": 9, "fecha": "2026-11-02", "categoria": "transporte", "monto": 3600, "descripcion": "Nafta para la moto" },
+  { "id": 10, "fecha": "2026-11-03", "categoria": "otros", "monto": 4500, "descripcion": "Regalo para mamá" }
+]

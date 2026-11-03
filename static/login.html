@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar · Mis Gastos</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <h1>Mis Gastos</h1>
+    <p>Entrá con tu cuenta o creá una nueva: cada uno ve solo sus gastos.</p>
+  </header>
+
+  <main class="acceso">
+    <p id="mensaje" class="alerta" role="alert" hidden></p>
+
+    <section class="panel">
+      <h2>Entrar</h2>
+      <form id="form-entrar" class="formulario-acceso">
+        <div class="campo">
+          <label for="email-entrar">Email</label>
+          <input type="email" id="email-entrar" name="email" autocomplete="email" required>
+        </div>
+        <div class="campo">
+          <label for="clave-entrar">Contraseña</label>
+          <input type="password" id="clave-entrar" name="clave" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="boton">Entrar</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Crear cuenta</h2>
+      <form id="form-crear" class="formulario-acceso">
+        <div class="campo">
+          <label for="email-crear">Email</label>
+          <input type="email" id="email-crear" name="email" autocomplete="email" required>
+        </div>
+        <div class="campo">
+          <label for="clave-crear">Contraseña</label>
+          <input type="password" id="clave-crear" name="clave" autocomplete="new-password" minlength="8" required aria-describedby="ayuda-clave">
+          <small id="ayuda-clave" class="ayuda">Mínimo 8 caracteres. Mejor una frase que una palabra.</small>
+        </div>
+        <button type="submit" class="boton">Crear cuenta</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p>Mis Gastos · tus datos quedan guardados en el servidor</p>
+  </footer>
+
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

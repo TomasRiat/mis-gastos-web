@@ -1,0 +1,19 @@
+# render.yaml — OPCIONAL (capítulo 11). Es la configuración del servicio escrita en un
+# archivo: en Render, New → Blueprint → elegís tu repositorio y Render lo arma solo.
+# Sin este archivo se carga lo mismo a mano (New → Web Service): ver el capítulo 11.
+services:
+  - type: web
+    name: mis-gastos            # la dirección será mis-gastos.onrender.com (o parecida)
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PRODUCCION
+        value: "1"
+      - key: SESSION_SECRET
+        generateValue: true     # Render inventa una clave al azar y la guarda
+      - key: TURSO_DATABASE_URL
+        sync: false             # Render te la pide al crear el servicio (libsql://…)
+      - key: TURSO_AUTH_TOKEN
+        sync: false             # ídem: el token que te dio Turso

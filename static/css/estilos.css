@@ -1,0 +1,338 @@
+/* Mis Gastos — estilos (mobile-first, con modo oscuro) */
+
+:root {
+  --fondo: #F1F5F9;
+  --superficie: #FFFFFF;
+  --texto: #1E293B;
+  --suave: #64748B;
+  --borde: #E2E8F0;
+  --acento: #0F766E;
+  --acento-hover: #115E59;
+  --sobre-acento: #FFFFFF;
+  --peligro: #B91C1C;
+  --radio: 0.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #0F172A;
+    --superficie: #1E293B;
+    --texto: #E2E8F0;
+    --suave: #94A3B8;
+    --borde: #334155;
+    --acento: #2DD4BF;
+    --acento-hover: #5EEAD4;
+    --sobre-acento: #0F172A;
+    --peligro: #F87171;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+  color: var(--texto);
+  background-color: var(--fondo);
+}
+
+h1,
+h2 {
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.cabecera,
+main,
+.pie {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem;
+}
+
+.cabecera p,
+.pie p {
+  margin: 0;
+  color: var(--suave);
+}
+
+.panel {
+  background-color: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Formulario: una columna en el celular, grilla en pantallas grandes */
+.formulario {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+input,
+select {
+  font: inherit;
+  color: var(--texto);
+  background-color: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+}
+
+.boton {
+  font: inherit;
+  font-weight: 600;
+  color: var(--sobre-acento);
+  background-color: var(--acento);
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.7rem 1.25rem;
+  cursor: pointer;
+}
+
+.boton:hover {
+  background-color: var(--acento-hover);
+}
+
+/* Tabla: si no entra en el celular, se desliza ella sola, no la página */
+.tabla-contenedor {
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.tabla th,
+.tabla td {
+  text-align: left;
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid var(--borde);
+}
+
+.tabla tfoot th,
+.tabla tfoot td {
+  font-weight: 700;
+  border-bottom: 0;
+}
+
+.tabla .monto {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.borrar {
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--peligro);
+  background: none;
+  border: 1px solid var(--peligro);
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+}
+
+.vacio {
+  color: var(--suave);
+  text-align: center;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+.dolares {
+  margin: 1rem 0 0;
+  text-align: right;
+}
+
+.cotizacion {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--suave);
+}
+
+/* Filtros (etapa 14.2) */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.contador {
+  margin: 0 0 0.6rem auto;
+  color: var(--suave);
+  font-size: 0.9rem;
+}
+
+/* Resumen con barras (etapa 14.3): JS pone el ancho, CSS dibuja */
+.resumen {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.resumen li {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+}
+
+.barra {
+  height: 0.9rem;
+  background-color: var(--fondo);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barra-relleno {
+  height: 100%;
+  background-color: var(--acento);
+  border-radius: 999px;
+}
+
+.resumen-monto {
+  grid-column: 2;
+  font-size: 0.85rem;
+  color: var(--suave);
+}
+
+/* Editar (etapa 14.4) */
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.boton-secundario {
+  color: var(--acento);
+  background-color: transparent;
+  border: 1px solid var(--acento);
+}
+
+.boton-secundario:hover {
+  color: var(--sobre-acento);
+}
+
+.formulario.editando {
+  outline: 2px solid var(--acento);
+  outline-offset: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.acciones {
+  white-space: nowrap;
+}
+
+.editar {
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--acento);
+  background: none;
+  border: 1px solid var(--acento);
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  margin-right: 0.3rem;
+  cursor: pointer;
+}
+
+/* Copia de seguridad (etapa 14.5) */
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.mensaje {
+  margin: 0.75rem 0 0;
+  color: var(--suave);
+}
+
+/* Errores que manda el servidor (app web, etapa 8) */
+.alerta {
+  color: var(--peligro);
+  background-color: var(--superficie);
+  border: 1px solid var(--peligro);
+  border-radius: var(--radio);
+  padding: 0.75rem 1rem;
+  margin: 0 0 1.25rem;
+}
+
+/* Usuarios (app web, etapa 9): quién está adentro y la pantalla de entrar */
+.usuario {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.usuario span {
+  color: var(--suave);
+  overflow-wrap: anywhere;
+}
+
+.acceso {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.acceso .panel {
+  margin-bottom: 0;
+}
+
+.formulario-acceso {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.ayuda {
+  color: var(--suave);
+  font-size: 0.85rem;
+}
+
+@media (min-width: 48rem) {
+  .acceso {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .acceso .alerta {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .formulario {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: end;
+  }
+
+  .campo-ancho {
+    grid-column: span 2;
+  }
+}
